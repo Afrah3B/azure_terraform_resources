@@ -21,15 +21,10 @@ variable "cidr_block" {
 
 }
 
-variable "subnet_cidr_block" {
-
-  type    = list(string)
-  default = ["10.0.2.0/24"]
-
-}
-
-variable "subnet_name" {
-  type = string
+variable "subnets" {
+  type = map(object({
+    address_prefixes = list(string)
+  }))
 }
 
 variable "public_ip_address" {
@@ -49,6 +44,13 @@ variable "nic_name" {
   type = string
 }
 
+variable "nic_subnet_details" {
+
+  description = "Assign subnet to a nic"
+  type        = string
+
+}
+
 variable "private_ip_address_allocation" {
   type = string
 }
@@ -57,16 +59,19 @@ variable "nsg_name" {
   type = string
 }
 
-variable "security_rule_direction" {
-  type = string
-}
+variable "security_rule" {
 
-variable "security_rule_access" {
-  type = string
-}
+  type = map(object({
+    priority                   = number
+    direction                  = string
+    access                     = string
+    protocol                   = string
+    source_port_range          = string
+    destination_port_range     = string
+    source_address_prefix      = string
+    destination_address_prefix = string
 
-variable "security_rule_all" {
-  type = string
+  }))
 }
 
 variable "ip_allocation_method" {
